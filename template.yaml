@@ -1,0 +1,16 @@
+AWSTemplateFormatVersion: 2010-09-09
+
+Parameters:
+    EC2InstanceType:
+        Type: String
+        Description: Instance type for the EC2 instance
+        Default: t2.micro
+        AllowedValues: [ t2.micro ]
+        ConstraintDescription: Must be a free tier eligible instance type
+
+Resources:
+    EC2Instance:
+        Type: AWS::EC2::Instance
+        Properties:
+            InstanceType: !Ref EC2InstanceType
+            ImageId: ami-0ec6517f6edbf8044
