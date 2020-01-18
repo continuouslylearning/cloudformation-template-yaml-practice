@@ -1,6 +1,15 @@
 AWSTemplateFormatVersion: 2010-09-09
 
 Parameters:
+    DBUsername:
+        Type: String
+        Description: Master username for the RDS instance
+        MinLength: 1
+        MaxLength: 16
+    DBPassword:
+        Type: String
+        Description: Master password for the RDS instance
+        MinLength: 8
     EC2InstanceType:
         Type: String
         Description: Instance type for the EC2 instance
@@ -12,7 +21,7 @@ Parameters:
         Description: IP allowed for SSH access to the EC2 instance
         Default: 0.0.0.0/0
         AllowedPattern: (\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})/(\d{1,2})
-
+    
 Mappings:
     RegionMap:
         us-west-1:
@@ -37,8 +46,24 @@ Resources:
               FromPort: 22
               ToPort: 22
               CidrIp: !Ref SSHLocation
-
+    PostgresInstance:
+        Type: AWS::RDS::DBInstance
+        Properties:
+            AllocatedStorage: 20
+            DBInstanceClass: db.t2.micro
+            Engine: postgres
+            MasterUsername: !Ref DBUsername
+            MasterUserPassword: !Ref DBPassword
+            MultiAZ: false
+            StorageType: gp2
+            
 Outputs:
     InstancePublicIP:
         Description: The public IP for the EC2 instance. Use this IP for SSH access
         Value: !GetAtt [ EC2Instance, PublicIp ]
+    PostgresEndPoint:
+        Description: Address for the Postgres instance
+        Value: !GetAtt [ PostgresInstance, Endpoint.Address ]
+    PostgressPort:
+        Description: Port for the Postgres instance
+        Value: !GetAtt [ PostgresInstance, Endpoint.Port ]
