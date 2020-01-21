@@ -16,6 +16,9 @@ Parameters:
         Default: t2.micro
         AllowedValues: [ t2.micro ]
         ConstraintDescription: Must be a free tier eligible instance type
+    KeyName:
+        Type: String 
+        Description: The name of the Key Pair associated with the EC2 instance
     SSHLocation:
         Type: String
         Description: IP allowed for SSH access to the EC2 instance
@@ -36,6 +39,7 @@ Resources:
                 - RegionMap 
                 - !Ref AWS::Region
                 - ImageId
+            KeyName: !Ref KeyName
             SecurityGroups: [ !Ref EC2SecurityGroup ] 
     EC2SecurityGroup:
         Type: AWS::EC2::SecurityGroup

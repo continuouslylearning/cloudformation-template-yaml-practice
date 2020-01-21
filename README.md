@@ -4,8 +4,11 @@
 aws cloudformation create-stack  
     --stack-name <stack name>  
     --template-body file://<path to the template file>  
-    --parameters  
+    --parameters
+        ParameterKey=DBUsername,ParameterValue=<db username>
+        ParameterKey=DBPassword,ParameterValue=<db password>  
         ParameterKey=EC2InstanceType,ParameterValue=<instance type>   
+        ParameterKey=KeyName,ParameterValue=<key name>
         ParameterKey=SSHLocation,ParameterValue=<SSH location>  
 `
   
@@ -14,7 +17,10 @@ aws cloudformation create-stack
 aws cloudformation update-stack  
     --stack-name <name of existing stack>  
     --template-body file://<path to the template file>  
-    --parameters  
-        ParameterKey=EC2InstanceType,ParameterValue=<instance type>  
+    --parameters
+        ParameterKey=DBUsername,ParameterValue=<db username>
+        ParameterKey=DBPassword,ParameterValue=<db password>  
+        ParameterKey=EC2InstanceType,ParameterValue=<instance type>
+        ParameterKey=KeyName,ParameterValue=<key name>
         ParameterKey=SSHLocation,ParameterValue=<SSH location>  
 `
